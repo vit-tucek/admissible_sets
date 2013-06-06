@@ -67,15 +67,16 @@ def greedy(H,primes_list):
     return H
 
 def count(H,p): # expensive!
-    counts = []
-    H = H % p
-    for r in range(p):
-        cond = H == r
-        l = len(H[cond])
-        counts.append(l)
-        if l == 0: # there is a modulus that is not contained in H -> profit
-            break
-    return counts
+#    counts = []
+#    H = H % p
+#    for r in range(p):
+#        cond = H == r
+#        l = len(H[cond])
+#        counts.append(l)
+#        if l == 0: # there is a modulus that is not contained in H -> profit
+#            break
+#    return counts
+    return np.bincount(H % p)
 
 def pick_best(H,k):
     '''
@@ -91,14 +92,16 @@ def greedy_greedy(H,B):
     primes = get_primes(max(abs(H)))
     piB = pi(primes,sqrt(B))
     sieve = [(2,1)] + [(p,0) for p in primes[1:piB]]
-    H = greedy(H,primes[piB:k])
     H = sift(H,sieve)
+    H = greedy(H,primes[piB:k])    
     return H,primes
 
 
 #H,primes = process(H)
-H = np.arange(-185662,202456)
-H,primes = greedy_greedy(H,4739224)
+#H = np.arange(-185662,202456)
+#H,primes = greedy_greedy(H,4739224)
+H = np.arange(2,399664)
+H,primes = greedy_greedy(H,H[-1]-H[0])
 results(H,primes) # this takes longest because is_admissible is expensive
 
 if len(H) > k:
