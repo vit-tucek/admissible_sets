@@ -96,7 +96,7 @@ def greedy_greedy(H,B):
     piB = pi(primes,sqrt(B))
     sieve = [(2,1)] + [(p,0) for p in primes[1:piB]]
     H = sift(H,sieve)
-    H = greedy(H,primes[piB:k])    
+    H = greedy(H,primes[piB:k])
     return H,primes
 
 
