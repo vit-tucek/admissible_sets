@@ -68,8 +68,9 @@ def greedy(H,primes_list):
 
 def count(H,p): # expensive!
     counts = []
+    H = H % p
     for r in range(p):
-        cond = H % p == r
+        cond = H == r
         l = len(H[cond])
         counts.append(l)
         if l == 0: # there is a modulus that is not contained in H -> profit
@@ -95,9 +96,9 @@ def greedy_greedy(H,B):
     return H,primes
 
 
-H,primes = process(H)
-#H = np.arange(-185662,202456)
-#H,primes = greedy_greedy(H,4739224)
+#H,primes = process(H)
+H = np.arange(-185662,202456)
+H,primes = greedy_greedy(H,4739224)
 results(H,primes) # this takes longest because is_admissible is expensive
 
 if len(H) > k:
