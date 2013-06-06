@@ -3,7 +3,7 @@ from bisect import bisect_left
 import numpy as np
 
 def get_primes(max):
-    return primesfrom2to(max)
+    return primesfrom2to(max+1)
 
 def primesfrom2to(n):
     '''
@@ -31,7 +31,7 @@ def is_p_admissible(H,p):
     '''
     This is the biggest bottleneck.
     '''
-    count = np.bincount(H % p)
+    count = np.bincount(H % p, minlength = p)
     return 0 == count.prod()
 #    return p != np.count_nonzero(count) # this is worse than count.prod()
 
@@ -55,4 +55,4 @@ def pi(a, x):
     raise ValueError
 
 def results(H,primes):
-    print 'diameter:', H[-1]-H[0], 'length:', len(H), 'admissible:', is_admissible(H,primes)[0]
+    print 'diameter:', H[-1]-H[0], 'length:', len(H), 'admissible:', is_admissible(H,primes)

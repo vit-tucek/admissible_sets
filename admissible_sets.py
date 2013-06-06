@@ -60,9 +60,9 @@ def greedy(H,primes_list):
     that saves as much of H as possible if it is sifted by previous primes.
     '''
     for p in primes_list:
-        counts = np.bincount(H % p)
+        counts = np.bincount(H % p, minlength = p)
         s = np.argmin(counts)
-        print 'greedy sifting with:',p,s,counts[s]
+#        print 'greedy sifting with:',p,s,counts[s]
         H = sift(H,[ (p,s) ])
     return H
 
@@ -77,18 +77,25 @@ def pick_best(H,k):
     return H[i:i+k]
 
 def greedy_greedy(H,B):
+    '''
+    Implementation of algorhitm by Andrew Sutherland
+    See http://sbseminar.wordpress.com/2013/05/30/i-just-cant-resist-there-are-infinitely-many-pairs-of-primes-at-most-59470640-apart/#comment-23566
+    '''
     primes = get_primes(max(abs(H)))
-    piB = pi(primes,sqrt(B))
-    sieve = [(2,1)] + [(p,0) for p in primes[1:piB]]
+    piB = pi(primes,sqrt(B)) - 1
+    sieve = [(2,1)] + [(p,0) for p in primes[1:piB+1]]
+    print 'sifting mod 0 up to', primes[piB]
     H = sift(H,sieve)
-    H = greedy(H,primes[piB:k])
+    pik = pi(primes,k)
+    print 'greedy sifting from', primes[piB], ' to', primes[pik]
+    H = greedy(H,primes[piB:pik+1])
     return H,primes
 
 
 #H,primes = process(H)
-#H = np.arange(-185662,202456)
+H = np.arange(-185662,202458)
 #H,primes = greedy_greedy(H,4739224)
-H = np.arange(2,399664)
+#H = np.arange(2,399664)
 H,primes = greedy_greedy(H,H[-1]-H[0])
 results(H,primes) # this takes longest because is_admissible is expensive
 
