@@ -66,21 +66,6 @@ def greedy(H,primes_list):
         H = sift(H,[ (p,s) ])
     return H
 
-<<<<<<< HEAD
-=======
-def count(H,p): # expensive!
-#    counts = []
-#    H = H % p
-#    for r in range(p):
-#        cond = H == r
-#        l = len(H[cond])
-#        counts.append(l)
-#        if l == 0: # there is a modulus that is not contained in H -> profit
-#            break
-#    return counts
-    return np.bincount(H % p)
-
->>>>>>> c2f5e8c16e858fe52371cc5dc0fbb48f1a41829b
 def pick_best(H,k):
     '''
     If our set H is larger than we need we just pick the subset with minimal diameter
