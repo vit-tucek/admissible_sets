@@ -27,24 +27,13 @@ def is_prime(p,primes):
     else:
         return  False
 
-def add_primes(N,primes):
-    '''
-    adds N primes
-    '''
-    while len(primes) < N:
-        add_prime(primes)
-    return primes
-
 def is_p_admissible(H,p):
     '''
     This is the biggest bottleneck.
-    The following code is copied from numpy.unique with a change from quicksort
-    to mergesort since I found the latter to perform slightly better.
     '''
-    r = H % p
-    r.sort(kind='mergesort')
-    return p != len(r[np.concatenate( ([True], r[1:] != r[:-1]) )])
-#    return p != len(np.unique(H % p))
+    count = np.bincount(H % p)
+    return 0 == count.prod()
+#    return p != np.count_nonzero(count) # this is worse than count.prod()
 
 def is_admissible(H,primes):
     admissible = True

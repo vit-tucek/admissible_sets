@@ -3,7 +3,7 @@ import numpy as np
 from prime_utils import * # this module contains prime-related stuff such as pi() as well as checkign for admissibility
 from math import pow, log, sqrt
 
-#N = 10000
+
 k = 34429
 N = 500000
 # we always assume that elements of H are in increasing order
@@ -16,7 +16,7 @@ def process(H):
     '''
     primes = get_primes(max(abs(H)))
 #    sieve = [(p,1) for p in primes[:len(primes)/5]]
-#    sieve = eratosthenes(primes,N/(math.log(N)*4))
+#    sieve = eratosthenes(primes,N/(math.log(N)*2))
 #    y = 10
 #    x = len(H)
 #    z = x/(0.2*log(x)*pow(log(log(x)),pi(primes,y)))
