@@ -138,3 +138,9 @@ def see_response(H,start=2):
     mgft = np.abs(ft)
     xVals = np.fft.fftfreq(len(signal), d=1.0)
     plot(xVals[start:len(mgft)], mgft[start:],'.')
+    
+def see_response_fromfile(filename,start=2,sep='\n'):
+    H = np.fromfile(filename,dtype='int64',sep=sep)
+    print H
+    see_response(H,start)
+    return H
