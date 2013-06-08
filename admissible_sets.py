@@ -4,38 +4,52 @@ from prime_utils import * # this module contains prime-related stuff such as pi(
 from math import pow, log, sqrt
 
 
-k = 34429
-N = 500000
+#k = 34429
+#N = 500000
+
+k = 10719
+N = 120000
+
 # we always assume that elements of H are in increasing order
-H = np.arange(-N/2,N/2)
+#H = np.arange(-N/2,N/2)
 #H = np.arange(N) # is this worse than symmetric interval around 0?
+H = np.arange(-45000,70000)
+
+def optimal_schinzel(HH): 
+    primes = get_primes(max(abs(HH)))
+#    maxj = pi(primes,len(HH)/4)
+    maxj = len(primes)
+    results = []
+    for i in range(6,15):
+        H = HH
+        for j in range(i+1,maxj,10):
+            sieve =  [(p,1) for p in primes[:i]] + [(p,0) for p in primes[i:j+1]]
+            sift(H,sieve)
+            if is_admissible(H,primes)[0]:
+                print i,j, 'diameter:', H[-1]-H[0], 'length:', len(H), 
+                if len(H) > k:
+                    print 'picking the best'
+                    H = pick_best(H,k)
+                res = (i,j,H[-1]-H[0])
+                results.append( res )
+    return results
 
 def process(H):
     '''
-    In this function we populate the primes and pick a sieve.
+    Just an example
     '''
     primes = get_primes(max(abs(H)))
 #    sieve = [(p,1) for p in primes[:len(primes)/5]]
-#    sieve = eratosthenes(primes,N/(math.log(N)*2))
-#    y = 10
+    sieve = eratosthenes(primes,len(H)/(math.log(len(H))*4))
+#    y = 2
 #    x = len(H)
-#    z = x/(0.2*log(x)*pow(log(log(x)),pi(primes,y)))
+#    z = x/(3.86*log(x)*pow(log(log(x)),pi(primes,y)))
+#    print pi(primes,z)
 #    sieve = schinzel(primes,y,z)
-    sieve = schinzel(primes,20,2000)
+#    sieve = schinzel(primes,20,2000)
     H = sift(H,sieve)
 #    H = greedy(H,primes[pi(primes,z):pi(primes,z)+100])
     return H, primes
-
-def sift(H,sieve):
-    '''
-    This accomplishes the actual sieving.
-    '''
-    for p,s in sieve:
-        cond = H % p != s
-        H = H[cond]
-#        if max(abs(H)) < p: # this actually hurts performance
-#            break
-    return H
 
 def eratosthenes(primes,cutoff):
     '''
@@ -50,8 +64,8 @@ def schinzel(primes,y,z):
     '''
     y = pi(primes,y)
 #    print primes[:y]
-    z = pi(primes,z+1)
-    res =  [(p,1) for p in primes[:y]] + [(p,0) for p in primes[y:z+1]]
+    z = pi(primes,z)+1
+    res =  [(p,1) for p in primes[:y]] + [(p,0) for p in primes[y:z]]
     return res
 
 def greedy(H,primes_list):
@@ -65,16 +79,6 @@ def greedy(H,primes_list):
 #        print 'greedy sifting with:',p,s,counts[s]
         H = sift(H,[ (p,s) ])
     return H
-
-def pick_best(H,k):
-    '''
-    If our set H is larger than we need we just pick the subset with minimal diameter
-    '''
-    diameters = []
-    for i in range(len(H)-k+1):
-        diameters.append(H[i+k-1] - H[i])
-    i = np.argmin(diameters)
-    return H[i:i+k]
 
 def greedy_greedy(H,B):
     '''
@@ -91,14 +95,13 @@ def greedy_greedy(H,B):
     H = greedy(H,primes[piB:pik+1])
     return H,primes
 
+#res = optimal_schinzel(H) # no gains
 
-#H,primes = process(H)
-H = np.arange(-185662,202458)
-#H,primes = greedy_greedy(H,4739224)
-#H = np.arange(2,399664)
-H,primes = greedy_greedy(H,H[-1]-H[0])
+H,primes = process(H)
+#H = np.arange(-180568,207406)
+#H,primes = greedy_greedy(H,H[-1]-H[0])
 results(H,primes) # this takes longest because is_admissible is expensive
-
+#
 if len(H) > k:
     H = pick_best(H,k)
     print 'best diameter of length', k, 'is:',H[-1]-H[0]
