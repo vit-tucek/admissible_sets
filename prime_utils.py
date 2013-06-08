@@ -137,4 +137,4 @@ def see_response(H,start=2):
     ft = np.fft.fft(signal*np.kaiser(len(signal),14))
     mgft = np.abs(ft)
     xVals = np.fft.fftfreq(len(signal), d=1.0)
-    plot(xVals[start:len(mgft)], mgft[start:],'x')
+    plot(xVals[start:len(mgft)], mgft[start:],'.')
