@@ -8,7 +8,7 @@ from math import pow, log, sqrt
 #N = 500000
 
 k = 10719
-N = 120000
+N = 40000
 
 # we always assume that elements of H are in increasing order
 H = np.arange(-N/2,N/2)
@@ -16,43 +16,20 @@ H = np.arange(-N/2,N/2)
 #H = np.arange(-N/3,2*N/3)
 #H = np.arange(-58486,53786)
 
-#def two_chunk_greedy(H,primes):
-#    '''
-#        Same as greedy except it works in chunks of size 2
-#    '''
-#    for i in range(0,len(primes),2):
-#        if i > len(primes):
-#            break
-#        c1 = np.bincount(H % primes[i], minlength = primes[i])
-#        c2 = np.bincount(H % primes[i+1], minlength = primes[i+1])
-#        m = 100000
-#        coord = (0,0)
-#        for r1 in range(primes[i]):
-#            for r2 in range(primes[i+1]):
-#                s = c1[r1] + c2[r2]
-#                if s < m:
-#                    m = s
-#                    coord = (r1,r2)
-#        H = sift(H,[ (primes[i],coord[0]), (primes[i+1],coord[1]) ])
-#	if is_admissible(H,primes[i+2:])[0]:
-#         print 'admissible at prime number',i, ' which is', primes[i]
-#         break
-#    return H
-
-
 def two_chunk_greedy(H,primes):
     '''
         Same as greedy except it works in chunks of size 2
     '''
     for i in range(0,len(primes),2):
-        if i > len(primes):
+        if i+2 > len(primes):
             break
-        m = 1000000000000000
+        c1 = np.bincount(H % primes[i], minlength = primes[i])
+        c2 = np.bincount(H % primes[i+1], minlength = primes[i+1])
+        m = 100000000000000000000
         coord = (0,0)
         for r1 in range(primes[i]):
             for r2 in range(primes[i+1]):
-                test = sift(H, [ (primes[i], r1), (primes[i+1], r2)])
-                s = len(test)
+                s = c1[r1] + c2[r2]
                 if s < m:
                     m = s
                     coord = (r1,r2)
@@ -61,6 +38,29 @@ def two_chunk_greedy(H,primes):
          print 'admissible at prime number',i, ' which is', primes[i]
          break
     return H
+
+#
+#def two_chunk_greedy(H,primes):
+#    '''
+#        Same as greedy except it works in chunks of size 2
+#    '''
+#    for i in range(0,len(primes),2):
+#        if i + 2> len(primes):
+#            break
+#        m = 1000000000000000
+#        coord = (0,0)
+#        for r1 in range(primes[i]):
+#            for r2 in range(primes[i+1]):
+#                test = sift(H, [ (primes[i], r1), (primes[i+1], r2)])
+#                s = len(test)
+#                if s < m:
+#                    m = s
+#                    coord = (r1,r2)
+#        H = sift(H,[ (primes[i],coord[0]), (primes[i+1],coord[1]) ])
+#	if is_admissible(H,primes[i+2:])[0]:
+#         print 'admissible at prime number',i, ' which is', primes[i]
+#         break
+#    return H
 
 def greedy(H,primes_list):
     '''
@@ -78,15 +78,16 @@ def greedy(H,primes_list):
          break
     return H
 
-print 'symmetric'
-primes = get_primes(max(abs(H)))
-H = two_chunk_greedy(H,primes[:len(primes)/16])
-results(H,primes) # this takes longest because is_admissible is expensive
+#print 'symmetric'
+#primes = get_primes(max(abs(H)))
+#H = two_chunk_greedy(H,primes[:len(primes)])
+#results(H,primes) # this takes longest because is_admissible is expensive
 
 H = np.arange(N)
 print 'positive'
 primes = get_primes(max(abs(H)))
-H = two_chunk_greedy(H,primes[:len(primes)/16])
+H = two_chunk_greedy(H,primes)
+#H = greedy(H,primes)
 results(H,primes) # this takes longest because is_admissible is expensive
 
 if len(H) > k:

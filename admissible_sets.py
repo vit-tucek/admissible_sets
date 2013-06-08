@@ -40,12 +40,12 @@ def process(H):
     '''
     primes = get_primes(max(abs(H)))
 #    sieve = [(p,1) for p in primes[:len(primes)/5]]
-    sieve = eratosthenes(primes,len(H)/(math.log(len(H))*4))
-#    y = 2
-#    x = len(H)
-#    z = x/(3.86*log(x)*pow(log(log(x)),pi(primes,y)))
+#    sieve = eratosthenes(primes,len(H)/(math.log(len(H))*4))
+    y = 2
+    x = len(H)
+    z = x/(3.86*log(x)*pow(log(log(x)),pi(primes,y)))
 #    print pi(primes,z)
-#    sieve = schinzel(primes,y,z)
+    sieve = schinzel(primes,y,z)
 #    sieve = schinzel(primes,20,2000)
     H = sift(H,sieve)
 #    H = greedy(H,primes[pi(primes,z):pi(primes,z)+100])
@@ -97,9 +97,9 @@ def greedy_greedy(H,B):
 
 #res = optimal_schinzel(H) # no gains
 
-H,primes = process(H)
+#H,primes = process(H)
 #H = np.arange(-180568,207406)
-#H,primes = greedy_greedy(H,H[-1]-H[0])
+H,primes = greedy_greedy(H,H[-1]-H[0])
 results(H,primes) # this takes longest because is_admissible is expensive
 #
 if len(H) > k:
